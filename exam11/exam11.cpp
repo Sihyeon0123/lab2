@@ -1,56 +1,66 @@
 #include <iostream>
 #include <map>
 #include <string>
+#include <limits>
+
 using namespace std;
 
-struct Student {
-    int mid_exam;
-    int final_exam;
-    Student() : mid_exam(0), final_exam(0) {}
-
-    Student(int mid, int final) : mid_exam(mid), final_exam(final) {}
-};
-
 int main() {
+    map<string, map<int, int>> students;
+    string name;
+    int mid_score;
+    int final_score;
     int num;
-    cout << "학생수를 입력해 주세요: ";
+
+    cout << "학생 수를 입력해 주세요:" << endl;
     cin >> num;
-    cin.ignore();  // Enter 키 제거
+    cin.clear();
 
-    map<string, Student> studentMap;
-
-    for (int i = 0; i < num; i++) {
-        string name;
-        int mid_exam, final_exam;
-
-        cout << "학생 이름: ";
-        cin >> name;
-        cout << "중간 시험 점수: ";
-        cin >> mid_exam;
-        cout << "기말 시험 점수: ";
-        cin >> final_exam;
-        cin.ignore();  // Enter 키 제거
-        cout << endl;
-
-        studentMap[name] = Student(mid_exam, final_exam);
+    
+    for(int i = 0; i < num; i++){
+        cout << "[" << i+1 <<"] 학생이름과 중간, 기말고사 점수를 입력해 주세요:" << endl;
+        cin >> name >> mid_score >> final_score;
+        // 입력이 제대로 되었는지 확인
+        if (cin.fail()) {
+            cout << "잘못된 입력입니다. 다시 시도하세요." << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            continue;
+        }
+        else if(students.find(name) != students.end()){
+            cout << "중복된 이름이 있습니다. 다시 시도하세요." << endl;
+            i--;
+            continue;
+        }
+        map<int, int> temp;
+        temp.emplace(mid_score, final_score);
+        students.emplace(name, temp);
     }
 
-    string name;
-    cout << "찾을 학생의 이름을 입력해주세요: ";
-    cin >> name;
+    cout << "입력된 학생을 출력합니다:" << endl;
+    for (const auto &student : students) {
+        cout << student.first << " ";
+        for (const auto &score : student.second){
+            cout << score.first << " " << score.second << endl;
+        } 
+        
+    }
 
-    auto it = studentMap.find(name);
+    cout << "검색할 이름을 입력하세요:\n";
+    string search_name;
+    
+    while (cin >> search_name) {
+        auto m = students.find(search_name);
 
-    if (it != studentMap.end()) {
-        // 학생을 찾았을 경우
-        Student student = it->second;
-        cout << "학생을 찾았습니다:" << endl;
-        cout << "이름: " << name << endl;
-        cout << "중간 시험 점수: " << student.mid_exam << endl;
-        cout << "기말 시험 점수: " << student.final_exam << endl;
-    } else {
-        // 학생을 찾지 못한 경우
-        cout << "학생을 찾을 수 없습니다." << endl;
+        if (m != students.end()) {
+            cout << "검색 성공: " << m->first << endl;
+            for (const auto &score : m->second) {
+                cout << "중간시험: " << score.first << endl << "기말시험: " << score.second << " ";
+            }
+            cout << endl;
+        } else {
+            cout << "검색 결과가 없습니다: " << search_name << endl;
+        }
     }
 
     return 0;
