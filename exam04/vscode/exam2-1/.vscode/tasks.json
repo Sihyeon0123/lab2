@@ -1,0 +1,43 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+		"-fdigagnostics-color=always",
+		"-g", 
+		"${file}", 
+		"-o", 
+		"${fileDirname}/${fileBasenameNoExtersion}",
+		"-I${workspaceFolder}/lib",
+		"${workspaceFolder}/lib/libmath.h",
+		"${workspaceFolder}/lib/add.c",
+		"${workspaceFolder}/lib/sub.c",
+		"${workspaceFolder}/lib/multiply.c",
+		"${workspaceFolder}/lib/divide.c",
+	    ],
+  	    "options": {
+		"cwd": "${fileDirname}"
+	    },
+	    "problemMatcher": [
+		"$gcc"
+	    ]
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+	{
+            "label": "C/C++: gcc 활성 파일 빌드",
+            "type": "cppbuild",
+            "command": "/usr/bin/",
+            "args": ["-g", "${file}", "-o", "a.out"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}

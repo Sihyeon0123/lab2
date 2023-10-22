@@ -1,0 +1,62 @@
+{
+    "tasks": [
+        {
+            "type": "cppbuild",
+            "label": "C/C++: gcc 활성 파일 빌드",
+            "command": "/usr/bin/gcc",
+            "args": [
+                "-fdiagnostics-color=always",
+                "-g",
+                "${file}",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}",
+                "-I${workspaceFolder}/lib",
+                "${workspaceFolder}/lib/libmath.h",
+                "${workspaceFolder}/lib/add.c",
+                "${workspaceFolder}/lib/sub.c",
+                "${workspaceFolder}/lib/multiply.c",
+                "${workspaceFolder}/lib/divide.c"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "디버거에서 생성된 작업입니다."
+        },
+        {
+            "label": "build add.c",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+              "-g",                 // 디버그 정보 포함
+              "-rdynamic",    // rdynamic 옵션 추가
+              "${fileBasenameNoExtension}",              // 컴파일할 소스 파일
+              "-ldl",   //dl
+              "-o", "${fileBasenameNoExtension}",       // 출력 파일의 이름
+            ],
+            "group": {
+              "kind": "build",
+              "isDefault": true
+            },
+            "problemMatcher": {
+              "owner": "cpp",
+              "fileLocation": ["relative", "${workspaceFolder}"],
+              "pattern": {
+                "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                "file": 1,
+                "line": 2,
+                "column": 3,
+                "severity": 4,
+                "message": 5
+              }
+            }
+        }
+    ],
+    "version": "2.0.0"
+}
